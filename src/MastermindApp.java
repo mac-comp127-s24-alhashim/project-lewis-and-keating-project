@@ -1,14 +1,9 @@
 import java.util.*;
-import java.util.Random;
 
 import java.awt.Color;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
-import edu.macalester.graphics.ui.*;
+
 import edu.macalester.graphics.*;
-import edu.macalester.graphics.events.*;
 
 import edu.macalester.graphics.ui.Button;
 import edu.macalester.graphics.CanvasWindow;
@@ -25,6 +20,8 @@ class MastermindApp {
     public static final int BALL_RADIUS = 50;
     private final CanvasWindow canvas;
     private Button resetButton;
+
+    public String currentClicked = null;
 
     private Image backgroundImg = new Image("BoardSketch2.jpg");
 
@@ -50,13 +47,16 @@ class MastermindApp {
         });
 
         int offset = 0;
-
-        // TODO: add onClick somehow to the balls //
         for(String color : MastermindGame.colorList) {
             Ellipse ball = new Ellipse(100 + offset,700,BALL_RADIUS,BALL_RADIUS);
             ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2]));
-            canvas.add(ball);
+            // canvas.add(ball);
             offset += BALL_RADIUS;
+            canvas.onClick(event -> {
+                if(ball.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                    currentClicked = color;
+                };
+            });
         }
 
         canvas.add(resetButton);
