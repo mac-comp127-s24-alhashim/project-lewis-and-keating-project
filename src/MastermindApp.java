@@ -19,12 +19,12 @@ import edu.macalester.graphics.Image;
 
 class MastermindApp {
 
-    private static final int CANVAS_WIDTH = 600;
+    private static final int CANVAS_WIDTH = 500;
     private static final int CANVAS_HEIGHT = 800;
     private final CanvasWindow canvas;
     private Button resetButton;
 
-    private Image backgroundImg = new Image("BoardSketch1.png");
+    private Image backgroundImg = new Image("BoardSketch2.jpg");
 
     private MastermindGame currentGame;
 
@@ -37,9 +37,10 @@ class MastermindApp {
 
 
         resetButton = new Button("DO A THING");
-        resetButton.setPosition(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+        resetButton.setPosition(CANVAS_WIDTH * 0.1, CANVAS_HEIGHT * 0.5);
         resetButton.onClick(() -> {
             currentGame = new MastermindGame(false, 6);
+            resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() + 50));
             GraphicsText label = new GraphicsText(MastermindGame.printList(currentGame.getSecretCode()));
             label.setPosition(CANVAS_WIDTH / 3, CANVAS_HEIGHT / 3);
             canvas.add(label);
