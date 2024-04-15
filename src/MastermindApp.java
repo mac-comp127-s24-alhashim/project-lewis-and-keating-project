@@ -21,6 +21,8 @@ class MastermindApp {
 
     private static final int CANVAS_WIDTH = 600;
     private static final int CANVAS_HEIGHT = 800;
+
+    public static final int BALL_RADIUS = 50;
     private final CanvasWindow canvas;
     private Button resetButton;
 
@@ -45,6 +47,16 @@ class MastermindApp {
             canvas.add(label);
 
         });
+
+        int offset = 0;
+
+        // TODO: add onClick somehow to the balls //
+        for(String color : MastermindGame.colorList) {
+            Ellipse ball = new Ellipse(100 + offset,700,BALL_RADIUS,BALL_RADIUS);
+            ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2]));
+            canvas.add(ball);
+            offset += BALL_RADIUS;
+        }
 
         canvas.add(resetButton);
 

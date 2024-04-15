@@ -9,9 +9,15 @@ public class MastermindGame {
     public boolean duplicatesAllowed;
     public int codeLength;
 
+    public static final ArrayList<String> colorList = new ArrayList<String>(Arrays.asList("red","green","blue","yellow","brown","orange","black","white"));
+    public static final HashMap<String, int[]> colorMap = new HashMap<>();
+
+    
+
+
     public Random random = new Random();
 
-    public static final ArrayList<String> colorList = new ArrayList<String>(Arrays.asList("red","green","blue","yellow","brown","orange","black","white"));
+    
 
 
     // constructor for MastermindGame, also randomly generates code of codeLength
@@ -28,6 +34,18 @@ public class MastermindGame {
                 duplicateList.remove(colorChoice);
             }
         }
+
+
+        // initializes colorMap -- might delete later, took like five seconds anyway//
+        colorMap.put("red", new int[]{255,0,0});
+        colorMap.put("green", new int[]{0,255,0});
+        colorMap.put("blue", new int[]{0,0,255});
+        colorMap.put("yellow", new int[]{255,255,0});
+        colorMap.put("brown", new int[]{150,75,0});
+        colorMap.put("orange", new int[]{255,165,0});
+        colorMap.put("black", new int[]{0,0,0});
+        colorMap.put("white", new int[]{255,255,255});
+
     }
 
     public ArrayList<String> getSecretCode() {
