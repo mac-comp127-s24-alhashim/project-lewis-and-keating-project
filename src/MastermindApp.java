@@ -23,7 +23,7 @@ class MastermindApp {
 
     public String currentClicked = null;
 
-    private Image backgroundImg = new Image("BoardSketch2.jpg");
+    private Image backgroundImg = new Image("Board.png");
 
     private MastermindGame currentGame;
 
