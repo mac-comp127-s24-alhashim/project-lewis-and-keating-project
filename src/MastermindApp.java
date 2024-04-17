@@ -41,7 +41,7 @@ class MastermindApp {
 
         // determines what canvas to use based on code length //
         if(codeLength == 4) {
-            backgroundImg = new Image("BoardSketch2.jpg");
+            backgroundImg = new Image("Board.png");
         }
         canvas = new CanvasWindow("MACSTERMIND",CANVAS_WIDTH,CANVAS_HEIGHT);
         backgroundImg.setMaxWidth(CANVAS_WIDTH);
@@ -104,7 +104,7 @@ class MastermindApp {
         for(int n = 0; n < codeLength; n++) {
             guessIndex += 1;
             final int num = guessIndex - 1;
-            Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, CANVAS_HEIGHT / 2, BALL_RADIUS, BALL_RADIUS);
+            Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + (4 * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
             canvas.onClick(event -> {
                 if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
                     Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
