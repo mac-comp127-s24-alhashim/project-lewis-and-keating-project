@@ -43,6 +43,9 @@ class MastermindApp {
         if(codeLength == 4) {
             backgroundImg = new Image("Board.png");
         }
+        else if (codeLength == 6){
+            backgroundImg = new Image("BoardSixCode.png");
+        }
         canvas = new CanvasWindow("MACSTERMIND",CANVAS_WIDTH,CANVAS_HEIGHT);
         backgroundImg.setMaxWidth(CANVAS_WIDTH);
         backgroundImg.setMaxHeight(CANVAS_HEIGHT);
