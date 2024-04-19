@@ -158,7 +158,7 @@ class MastermindApp {
             if(currentClicked != null) {
                 canvas.remove(mouseBall);
                 mouseBall.setCenter(event.getPosition().getX(),event.getPosition().getY());
-                mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], 140));
+                mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], MastermindGame.colorMap.get(currentClicked)[3]/2));
             }
             canvas.add(mouseBall);
         });
