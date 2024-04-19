@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
@@ -14,6 +15,8 @@ import edu.macalester.graphics.ui.Button;
 class MastermindApp {
 
     private Ellipse mouseBall;
+
+    public static int guessNum = 0;
 
     private static final int CANVAS_WIDTH = 500;
     private static final int CANVAS_HEIGHT = 800;
@@ -53,8 +56,9 @@ class MastermindApp {
 
 
         // TODO: find what is causing error after you click the button like three times for some reason //
-        resetButton = new Button("check guess");
-        resetButton.setPosition(CANVAS_WIDTH * 0.75, CANVAS_HEIGHT * 0.75);
+        resetButton = new Button("check");
+        resetButton.setPosition(CANVAS_WIDTH * 0.775, CANVAS_HEIGHT * 0.75);
+        resetButton.setScale(BALL_RADIUS, BALL_RADIUS);
         resetButton.onClick(() -> {
 
 
@@ -64,20 +68,30 @@ class MastermindApp {
                 canvas.remove(mouseBall);
             }
             currentClicked = null;
-            
-            currentGame = new MastermindGame(false, codeLength);
-            resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() - BALL_RADIUS));
-            
-            GraphicsText checkPegs = new GraphicsText();
-            canvas.add(checkPegs);
-
             if(!guessArray.contains(null)) {
-                canvas.remove(checkPegs);
-                checkPegs = new GraphicsText(MastermindGame.printList((currentGame.checkSecretCode(guessArray))));
-            }
+                currentGame = new MastermindGame(false, codeLength);
+                resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() - BALL_RADIUS));
+                
+                GraphicsText checkPegs = new GraphicsText();
+                canvas.add(checkPegs);
 
-            checkPegs.setPosition(CANVAS_WIDTH / 4, CANVAS_HEIGHT / 4);
-            canvas.add(checkPegs);
+                
+
+                checkPegs.setPosition(CANVAS_WIDTH / 4, CANVAS_HEIGHT / 4);
+                canvas.add(checkPegs);
+                checkPegs = new GraphicsText(MastermindGame.printList((currentGame.checkSecretCode(guessArray))));
+
+                populatePegs(currentGame.checkSecretCode(guessArray));
+
+                guessNum += 1;
+
+                System.out.println(guessNum);
+
+                createGuessRects();
+
+
+            }
+            
 
         });
 
@@ -88,7 +102,7 @@ class MastermindApp {
         }
         canvas.add(mouseBall);
 
-        int offset = 0;
+        int offset = -1 * BALL_RADIUS;
         for(String color : MastermindGame.colorList) {
             Ellipse ball = new Ellipse(100 + offset,700,BALL_RADIUS,BALL_RADIUS);
             ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2], MastermindGame.colorMap.get(color)[3]));
@@ -119,12 +133,13 @@ class MastermindApp {
                 };
             });
             canvas.add(emptyRect);
-        }
+        }        
 
 
         canvas.onMouseMove(event -> {
-            canvas.remove(mouseBall);
+            
             if(currentClicked != null) {
+                canvas.remove(mouseBall);
                 mouseBall.setCenter(event.getPosition().getX(),event.getPosition().getY());
                 mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], 140));
             }
@@ -135,6 +150,51 @@ class MastermindApp {
 
 
         
+    }
+
+    public void populatePegs(ArrayList<String> pegList) {
+        int xOffset = 0;
+        for(String peg : pegList) {
+            if(peg.equals("red")) {
+                Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + (4.25 * BALL_RADIUS), (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                redPeg.setFillColor(Color.RED);
+                canvas.add(redPeg);
+            }
+            if(peg.equals("white")) {
+                Ellipse whitePeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + (4.25 * BALL_RADIUS), (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                whitePeg.setFillColor(Color.WHITE);
+                canvas.add(whitePeg);
+            }
+            if(peg.equals("blank")) {
+                Ellipse grayPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + (4.25 * BALL_RADIUS), (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                grayPeg.setFillColor(Color.GRAY);
+                canvas.add(grayPeg);
+            }
+            xOffset += BALL_RADIUS / 2;
+        }
+    }
+
+
+    // not working for some reason //
+    public void createGuessRects() {        
+        int guessIndex = 0;
+        for(int n = 0; n < codeLength; n++) {
+            guessIndex += 1;
+            final int num = guessIndex - 1;
+            Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + (4 * BALL_RADIUS) - (guessNum * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
+            // Rectangle emptyRect = new Rectangle(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, BALL_RADIUS, BALL_RADIUS); <- testing just making it in middle of canvas
+            canvas.onClick(event -> {
+                if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                    Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
+                    if(currentClicked != null) {
+                        guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
+                        canvas.add(guessEllipse);
+                        guessArray.set(num, currentClicked);
+                    }
+                };
+            });
+            canvas.add(emptyRect);
+        }
     }
 
     public static void main(String[] args) {
