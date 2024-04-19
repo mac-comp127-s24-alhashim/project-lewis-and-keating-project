@@ -37,14 +37,14 @@ public class MastermindGame {
 
 
         // initializes colorMap -- might delete later, took like five seconds anyway//
-        colorMap.put("red", new int[]{255,0,0});
-        colorMap.put("green", new int[]{0,255,0});
-        colorMap.put("blue", new int[]{0,0,255});
-        colorMap.put("yellow", new int[]{255,255,0});
-        colorMap.put("brown", new int[]{150,75,0});
-        colorMap.put("orange", new int[]{255,165,0});
-        colorMap.put("black", new int[]{0,0,0});
-        colorMap.put("white", new int[]{255,255,255});
+        colorMap.put("red", new int[]{195,40,40,230});
+        colorMap.put("green", new int[]{70,180,90,230});
+        colorMap.put("blue", new int[]{85,140,230,230});
+        colorMap.put("yellow", new int[]{240,220,80,230});
+        colorMap.put("brown", new int[]{65,40,30,230});
+        colorMap.put("orange", new int[]{250,160,50,230});
+        colorMap.put("black", new int[]{25,20,30,230});
+        colorMap.put("white", new int[]{230,225,235,230});
 
     }
 

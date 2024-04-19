@@ -38,7 +38,7 @@ class MastermindApp {
         for(int i = 0; i < codeLength; i++) {
             guessArray.add(null);
         }
-
+        
         // determines what canvas to use based on code length //
         if(codeLength == 4) {
             backgroundImg = new Image("Board.png");
@@ -79,23 +79,22 @@ class MastermindApp {
         });
 
         // makes a little ball that follows the cursor with the selected color //
-        mouseBall = new Ellipse(100000,100000, 10, 10);
+        mouseBall = new Ellipse(100000,100000, 20, 20);
         if(currentClicked == null) {
             mouseBall.setFillColor(new Color(0,0,0));
         }
-
         canvas.add(mouseBall);
 
         int offset = 0;
         for(String color : MastermindGame.colorList) {
             Ellipse ball = new Ellipse(100 + offset,700,BALL_RADIUS,BALL_RADIUS);
-            ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2]));
+            ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2], MastermindGame.colorMap.get(color)[3]));
             canvas.add(ball);
             offset += BALL_RADIUS;
             canvas.onClick(event -> {
                 if(ball.testHit(event.getPosition().getX(),event.getPosition().getY())){
                     currentClicked = color;
-                    mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
+                    mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], MastermindGame.colorMap.get(color)[3]));
                 };
             });
         }
@@ -109,8 +108,9 @@ class MastermindApp {
                 if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
                     Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
                     if(currentClicked != null) {
-                        guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
+                        guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], MastermindGame.colorMap.get(currentClicked)[3]));
                         canvas.add(guessEllipse);
+                        canvas.add(mouseBall);
                         guessArray.set(num, currentClicked);
                     }
                 };
@@ -123,7 +123,7 @@ class MastermindApp {
             canvas.remove(mouseBall);
             if(currentClicked != null) {
                 mouseBall.setCenter(event.getPosition().getX(),event.getPosition().getY());
-                mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
+                mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], 140));
             }
             canvas.add(mouseBall);
         });
