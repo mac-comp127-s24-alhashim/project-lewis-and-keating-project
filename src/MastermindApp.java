@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
-import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
@@ -22,7 +21,7 @@ class MastermindApp {
     private static final int CANVAS_HEIGHT = 800;
 
     public static final int BALL_RADIUS = 50;
-    private final CanvasWindow canvas;
+    private static final CanvasWindow canvas = new CanvasWindow("MACSTERMIND",CANVAS_WIDTH,CANVAS_HEIGHT);
     private Button resetButton;
 
     public String currentClicked = null;
@@ -49,7 +48,7 @@ class MastermindApp {
         else if (codeLength == 6){
             backgroundImg = new Image("BoardSixCode.png");
         }
-        canvas = new CanvasWindow("MACSTERMIND",CANVAS_WIDTH,CANVAS_HEIGHT);
+
         backgroundImg.setMaxWidth(CANVAS_WIDTH);
         backgroundImg.setMaxHeight(CANVAS_HEIGHT);
         canvas.add(backgroundImg);
@@ -87,6 +86,24 @@ class MastermindApp {
 
                 System.out.println(guessNum);
 
+
+                int guessIndex = 0;
+                for(int n = 0; n < codeLength; n++) {
+                    guessIndex += 1;
+                    final int num = guessIndex - 1;
+                    Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + ((4 - guessNum) * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
+                    canvas.onClick(event -> {
+                        if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                            Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
+                            if(currentClicked != null) {
+                                guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
+                                canvas.add(guessEllipse);
+                                guessArray.set(num, currentClicked);
+                            }
+                        };
+                    });
+                    canvas.add(emptyRect);
+                }
                 createGuessRects();
 
 
@@ -181,8 +198,7 @@ class MastermindApp {
         for(int n = 0; n < codeLength; n++) {
             guessIndex += 1;
             final int num = guessIndex - 1;
-            Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + (4 * BALL_RADIUS) - (guessNum * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
-            // Rectangle emptyRect = new Rectangle(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2, BALL_RADIUS, BALL_RADIUS); <- testing just making it in middle of canvas
+            Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + ((4 - guessNum) * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
             canvas.onClick(event -> {
                 if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
                     Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
