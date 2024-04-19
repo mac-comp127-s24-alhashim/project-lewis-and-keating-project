@@ -26,7 +26,7 @@ public class MastermindGame {
         this.duplicatesAllowed = duplicatesAllowed;
         this.codeLength = codeLength;
 
-        ArrayList<String> duplicateList = colorList;
+        ArrayList<String> duplicateList = (ArrayList) colorList.clone();
         for(int i = 0; i < codeLength; i++) {
             String colorChoice = duplicateList.get(random.nextInt(duplicateList.size()));
             this.secretCode.add(colorChoice);
@@ -123,5 +123,13 @@ public class MastermindGame {
             returnString += (list.get(i) + " ");
         }
         return returnString;
+    }
+
+    public static ArrayList<String> resetGuess(ArrayList<String> guessList) {
+        ArrayList<String> emptyList = new ArrayList<String>(Arrays.asList());
+        for(int i = 0; i < guessList.size(); i++) {
+            emptyList.add(null);
+        }
+        return emptyList;
     }
 }

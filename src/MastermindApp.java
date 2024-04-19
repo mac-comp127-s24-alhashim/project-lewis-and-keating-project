@@ -35,6 +35,8 @@ class MastermindApp {
     public ArrayList<String> guessArray = new ArrayList<String>();
 
     public MastermindApp(int codeLength) {
+
+        currentGame = new MastermindGame(false, codeLength);
         
         // fills the guessArray with nulls //
         for(int i = 0; i < codeLength; i++) {
@@ -45,7 +47,7 @@ class MastermindApp {
         if(codeLength == 4) {
             backgroundImg = new Image("Board.png");
         }
-        else if (codeLength == 6){
+        if (codeLength == 6){
             backgroundImg = new Image("BoardSixCode.png");
         }
 
@@ -53,6 +55,31 @@ class MastermindApp {
         backgroundImg.setMaxHeight(CANVAS_HEIGHT);
         canvas.add(backgroundImg);
 
+        // creates row at bottom with clickable colors //
+        double offset = -1 * BALL_RADIUS;
+        for(String color : MastermindGame.colorList) {
+            Ellipse ball = new Ellipse(100 + offset,700,BALL_RADIUS,BALL_RADIUS);
+            ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2], MastermindGame.colorMap.get(color)[3]));
+            canvas.add(ball);
+            offset += BALL_RADIUS;
+            canvas.onClick(event -> {
+                if(ball.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                    currentClicked = color;
+                    mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], MastermindGame.colorMap.get(color)[3]));
+                };
+
+            });
+        }
+
+        // adds code to the top of the screen //
+        double toTheRight = 0;
+        for(String codeColor : currentGame.getSecretCode()) {
+            System.out.println(codeColor);
+            Ellipse codeBall = new Ellipse(100 - BALL_RADIUS + toTheRight, 700 - (13 * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
+            codeBall.setFillColor(new Color(MastermindGame.colorMap.get(codeColor)[0], MastermindGame.colorMap.get(codeColor)[1], MastermindGame.colorMap.get(codeColor)[2]));
+            canvas.add(codeBall);
+            toTheRight += BALL_RADIUS;
+        }
 
         // TODO: find what is causing error after you click the button like three times for some reason //
         resetButton = new Button("check");
@@ -60,33 +87,22 @@ class MastermindApp {
         resetButton.setScale(BALL_RADIUS, BALL_RADIUS);
         resetButton.onClick(() -> {
 
-
             // this is a shotty algorithm tbh //
             // just supposed to remove the mouseball so it doesn't hang around //
             if(currentClicked != null) {
-                canvas.remove(mouseBall);
+                mouseBall.setPosition(100000,100000);
             }
             currentClicked = null;
             if(!guessArray.contains(null)) {
-                currentGame = new MastermindGame(false, codeLength);
                 resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() - BALL_RADIUS));
-                
-                GraphicsText checkPegs = new GraphicsText();
-                canvas.add(checkPegs);
-
-                
-
+                GraphicsText checkPegs = new GraphicsText(MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
                 checkPegs.setPosition(CANVAS_WIDTH / 4, CANVAS_HEIGHT / 4);
-                canvas.add(checkPegs);
                 checkPegs = new GraphicsText(MastermindGame.printList((currentGame.checkSecretCode(guessArray))));
-
+                canvas.add(checkPegs);
+                System.out.println(MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
                 populatePegs(currentGame.checkSecretCode(guessArray));
-
                 guessNum += 1;
-
-                System.out.println(guessNum);
-
-
+                guessArray = MastermindGame.resetGuess(guessArray);
                 int guessIndex = 0;
                 for(int n = 0; n < codeLength; n++) {
                     guessIndex += 1;
@@ -104,12 +120,7 @@ class MastermindApp {
                     });
                     canvas.add(emptyRect);
                 }
-                createGuessRects();
-
-
             }
-            
-
         });
 
         // makes a little ball that follows the cursor with the selected color //
@@ -119,19 +130,9 @@ class MastermindApp {
         }
         canvas.add(mouseBall);
 
-        int offset = -1 * BALL_RADIUS;
-        for(String color : MastermindGame.colorList) {
-            Ellipse ball = new Ellipse(100 + offset,700,BALL_RADIUS,BALL_RADIUS);
-            ball.setFillColor(new Color(MastermindGame.colorMap.get(color)[0], MastermindGame.colorMap.get(color)[1], MastermindGame.colorMap.get(color)[2], MastermindGame.colorMap.get(color)[3]));
-            canvas.add(ball);
-            offset += BALL_RADIUS;
-            canvas.onClick(event -> {
-                if(ball.testHit(event.getPosition().getX(),event.getPosition().getY())){
-                    currentClicked = color;
-                    mouseBall.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2], MastermindGame.colorMap.get(color)[3]));
-                };
-            });
-        }
+        
+
+        
 
         int guessIndex = 0;
         for(int n = 0; n < codeLength; n++) {
@@ -152,9 +153,7 @@ class MastermindApp {
             canvas.add(emptyRect);
         }        
 
-
         canvas.onMouseMove(event -> {
-            
             if(currentClicked != null) {
                 canvas.remove(mouseBall);
                 mouseBall.setCenter(event.getPosition().getX(),event.getPosition().getY());
@@ -164,52 +163,30 @@ class MastermindApp {
         });
 
         canvas.add(resetButton);
+        }
 
-
-        
-    }
+    
 
     public void populatePegs(ArrayList<String> pegList) {
-        int xOffset = 0;
+        double xOffset = 0;
+        double yOffset = (4.25 - guessNum) * BALL_RADIUS;
         for(String peg : pegList) {
             if(peg.equals("red")) {
-                Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + (4.25 * BALL_RADIUS), (BALL_RADIUS / 2), BALL_RADIUS / 2);
-                redPeg.setFillColor(Color.RED);
+                Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                redPeg.setFillColor(new Color(255,0,0));
                 canvas.add(redPeg);
             }
             if(peg.equals("white")) {
-                Ellipse whitePeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + (4.25 * BALL_RADIUS), (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                Ellipse whitePeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
                 whitePeg.setFillColor(Color.WHITE);
                 canvas.add(whitePeg);
             }
             if(peg.equals("blank")) {
-                Ellipse grayPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + (4.25 * BALL_RADIUS), (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                Ellipse grayPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
                 grayPeg.setFillColor(Color.GRAY);
                 canvas.add(grayPeg);
             }
             xOffset += BALL_RADIUS / 2;
-        }
-    }
-
-
-    // not working for some reason //
-    public void createGuessRects() {        
-        int guessIndex = 0;
-        for(int n = 0; n < codeLength; n++) {
-            guessIndex += 1;
-            final int num = guessIndex - 1;
-            Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + ((4 - guessNum) * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
-            canvas.onClick(event -> {
-                if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
-                    Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
-                    if(currentClicked != null) {
-                        guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
-                        canvas.add(guessEllipse);
-                        guessArray.set(num, currentClicked);
-                    }
-                };
-            });
-            canvas.add(emptyRect);
         }
     }
 
@@ -218,12 +195,13 @@ class MastermindApp {
         // tests
         
         MastermindGame game = new MastermindGame(true, 4);
-        System.out.println(game);
+       
+        // System.out.println(game);
     
-        ArrayList<String> guessArray = new ArrayList<String>(Arrays.asList("blue","blue","blue","white"));
-        System.out.println("Secretguess:  " + MastermindGame.printList(guessArray));
-        System.out.println("\n\n\n\n\n");
-        System.out.println(MastermindGame.printList(game.checkSecretCode(guessArray)));
+        // ArrayList<String> guessArray = new ArrayList<String>(Arrays.asList("blue","blue","blue","blue"));
+        // System.out.println("Secretguess:  " + MastermindGame.printList(guessArray));
+        // System.out.println("\n\n\n\n\n");
+        // System.out.println(MastermindGame.printList(game.checkSecretCode(guessArray)));
     
         MastermindApp newApp = new MastermindApp(4);
         
