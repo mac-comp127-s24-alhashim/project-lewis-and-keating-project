@@ -20,5 +20,5 @@ sourceCompatibility = 1.17
 targetCompatibility = 1.17
 
 sourceSets.main.java.srcDirs = ['src']
-sourceSets.main.resources.srcDirs = ['res']
+sourceSets.main.resources.srcDirs = ['res','images']
 sourceSets.test.java.srcDirs = ['test']
