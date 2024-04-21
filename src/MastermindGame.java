@@ -76,20 +76,25 @@ public class MastermindGame {
 
         ArrayList<String> returnArray = new ArrayList<String>(Arrays.asList());
         ArrayList<String> duplicateCode = getDuplicateOfSecretCode();
+
+        ArrayList<String> guessDup = new ArrayList<String>();
+        for(String color : guess) {
+            guessDup.add(color);
+        }
         
-        for(int i = 0; i < guess.size(); i++) {
-            if(guess.get(i).equals(duplicateCode.get(i))) {
+        for(int i = 0; i < guessDup.size(); i++) {
+            if(guessDup.get(i).equals(duplicateCode.get(i))) {
                 returnArray.add("red");
-                guess.set(i,"c");
+                guessDup.set(i,"c");
                 duplicateCode.set(i, "p");
             }
         }
 
-        for(int i = 0; i < guess.size(); i++) {
+        for(int i = 0; i < guessDup.size(); i++) {
             for(int j = 0; j < duplicateCode.size(); j++) {
-                if(guess.get(i).equals(duplicateCode.get(j))) {
+                if(guessDup.get(i).equals(duplicateCode.get(j))) {
                     returnArray.add("white");
-                    guess.set(i, "r");
+                    guessDup.set(i, "r");
                     duplicateCode.set(j, "k");
                 }
             }

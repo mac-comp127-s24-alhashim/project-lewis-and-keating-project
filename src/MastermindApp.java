@@ -95,14 +95,15 @@ class MastermindApp {
             currentClicked = null;
             if(!guessArray.contains(null)) {
                 resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() - BALL_RADIUS));
-                GraphicsText checkPegs = new GraphicsText(MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
-                checkPegs.setPosition(CANVAS_WIDTH / 4, CANVAS_HEIGHT / 4);
-                checkPegs = new GraphicsText(MastermindGame.printList((currentGame.checkSecretCode(guessArray))));
-                canvas.add(checkPegs);
-                System.out.println(MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
+
+                // tests // 
+                System.out.println("actual code:" + MastermindGame.printList(currentGame.secretCode));
+                System.out.println("guess array:" + MastermindGame.printList(guessArray));
+                System.out.println("guess pegs: " + MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
+
                 populatePegs(currentGame.checkSecretCode(guessArray));
                 guessNum += 1;
-                guessArray = MastermindGame.resetGuess(guessArray);
+                
                 int guessIndex = 0;
                 for(int n = 0; n < codeLength; n++) {
                     guessIndex += 1;
@@ -119,6 +120,7 @@ class MastermindApp {
                         };
                     });
                     canvas.add(emptyRect);
+                    guessArray = MastermindGame.resetGuess(guessArray);
                 }
             }
         });
