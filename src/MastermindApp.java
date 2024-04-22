@@ -10,7 +10,6 @@ import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.ui.Button;
 
-
 class MastermindApp {
 
     private Ellipse mouseBall;
@@ -81,6 +80,15 @@ class MastermindApp {
             toTheRight += BALL_RADIUS;
         }
 
+
+        // TO DO: figure out how to make button be able to start new game in a new window //
+        Button startNewGameButton = new Button("Start new game?");
+        startNewGameButton.setPosition(100,100);
+        startNewGameButton.onClick(() -> {
+            MastermindApp newApp = new MastermindApp(codeLength);
+            canvas.closeWindow();
+        });
+
         // TODO: find what is causing error after you click the button like three times for some reason //
         resetButton = new Button("check");
         resetButton.setPosition(CANVAS_WIDTH * 0.775, CANVAS_HEIGHT * 0.75);
@@ -97,12 +105,28 @@ class MastermindApp {
                 resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() - BALL_RADIUS));
 
                 // tests // 
-                System.out.println("actual code:" + MastermindGame.printList(currentGame.secretCode));
-                System.out.println("guess array:" + MastermindGame.printList(guessArray));
-                System.out.println("guess pegs: " + MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
+                System.out.println("actual code: " + MastermindGame.printList(currentGame.secretCode));
+                System.out.println("guess array: " + MastermindGame.printList(guessArray));
+                System.out.println("guess pegs:  " + MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
 
                 populatePegs(currentGame.checkSecretCode(guessArray));
+
+                // WHATEVER HAPPENS WHEN PLAYER WINS GAME //
+                if(currentGame.checkSecretCode(guessArray).equals(new ArrayList<String>(Arrays.asList("red","red","red","red")))) {
+                    canvas.remove(resetButton);
+                    System.out.println("Game win!");
+                    canvas.add(startNewGameButton);
+                }
                 guessNum += 1;
+
+                // WHATEVER HAPPENS WHEN GAME LOSES //
+                if(guessNum == 10) {
+                    canvas.remove(resetButton);
+                    System.out.println("Game loss!");
+                    canvas.add(startNewGameButton);
+                }
+
+
                 
                 int guessIndex = 0;
                 for(int n = 0; n < codeLength; n++) {
@@ -132,10 +156,7 @@ class MastermindApp {
         }
         canvas.add(mouseBall);
 
-        
-
-        
-
+    
         int guessIndex = 0;
         for(int n = 0; n < codeLength; n++) {
             guessIndex += 1;
@@ -196,7 +217,7 @@ class MastermindApp {
         
         // tests
         
-        MastermindGame game = new MastermindGame(true, 4);
+        // MastermindGame game = new MastermindGame(true, 4);
        
         // System.out.println(game);
     
