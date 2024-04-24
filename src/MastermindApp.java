@@ -48,6 +48,10 @@ class MastermindApp {
         }
         if (codeLength == 6){
             backgroundImg = new Image("BoardSixCode.png");
+            canvas.closeWindow();
+            CANVAS_WIDTH = 650;
+            CANVAS_HEIGHT = 800;
+            canvas = new CanvasWindow("Macstermind", CANVAS_WIDTH, CANVAS_HEIGHT);
         }
 
         backgroundImg.setMaxWidth(CANVAS_WIDTH);
@@ -82,7 +86,14 @@ class MastermindApp {
         });
 
         resetButton = new Button("check");
-        resetButton.setPosition(CANVAS_WIDTH * 0.775, CANVAS_HEIGHT * 0.75);
+
+        if(codeLength == 4) {
+            resetButton.setPosition(CANVAS_WIDTH * 0.775, CANVAS_HEIGHT * 0.75);
+        }
+        else {
+            resetButton.setPosition((CANVAS_WIDTH * 0.775) + BALL_RADIUS - 14, CANVAS_HEIGHT * 0.75);
+        }
+        
         resetButton.setScale(BALL_RADIUS, BALL_RADIUS);
         resetButton.onClick(() -> {
 
@@ -96,9 +107,9 @@ class MastermindApp {
                 resetButton.setPosition(new Point(resetButton.getX(), resetButton.getY() - BALL_RADIUS));
 
                 // tests // 
-                System.out.println("actual code: " + MastermindGame.printList(currentGame.secretCode));
-                System.out.println("guess array: " + MastermindGame.printList(guessArray));
-                System.out.println("guess pegs:  " + MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
+                // System.out.println("actual code: " + MastermindGame.printList(currentGame.secretCode));
+                // System.out.println("guess array: " + MastermindGame.printList(guessArray));
+                // System.out.println("guess pegs:  " + MastermindGame.printList(currentGame.checkSecretCode(guessArray)));
 
                 populatePegs(currentGame.checkSecretCode(guessArray));
 
@@ -202,31 +213,55 @@ class MastermindApp {
     public void populatePegs(ArrayList<String> pegList) {
         double xOffset = 0;
         double yOffset = (4.25 - guessNum) * BALL_RADIUS;
-        for(String peg : pegList) {
-            if(peg.equals("red")) {
-                Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
-                redPeg.setFillColor(new Color(255,0,0));
-                canvas.add(redPeg);
+
+        if(codeLength == 4) {
+            for(String peg : pegList) {
+                if(peg.equals("red")) {
+                    Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                    redPeg.setFillColor(new Color(255,0,0));
+                    canvas.add(redPeg);
+                }
+                if(peg.equals("white")) {
+                    Ellipse whitePeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                    whitePeg.setFillColor(Color.WHITE);
+                    canvas.add(whitePeg);
+                }
+                if(peg.equals("blank")) {
+                    Ellipse grayPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                    grayPeg.setFillColor(Color.GRAY);
+                    canvas.add(grayPeg);
+                }
+                xOffset += BALL_RADIUS / 2;
             }
-            if(peg.equals("white")) {
-                Ellipse whitePeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
-                whitePeg.setFillColor(Color.WHITE);
-                canvas.add(whitePeg);
-            }
-            if(peg.equals("blank")) {
-                Ellipse grayPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
-                grayPeg.setFillColor(Color.GRAY);
-                canvas.add(grayPeg);
-            }
-            xOffset += BALL_RADIUS / 2;
         }
+        else {
+            for(String peg : pegList) {
+                if(peg.equals("red")) {
+                    Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.5) + (xOffset) + (BALL_RADIUS * 1.5), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                    redPeg.setFillColor(new Color(255,0,0));
+                    canvas.add(redPeg);
+                }
+                if(peg.equals("white")) {
+                    Ellipse whitePeg = new Ellipse((CANVAS_WIDTH * 0.5) + (xOffset) + (BALL_RADIUS * 1.5), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                    whitePeg.setFillColor(Color.WHITE);
+                    canvas.add(whitePeg);
+                }
+                if(peg.equals("blank")) {
+                    Ellipse grayPeg = new Ellipse((CANVAS_WIDTH * 0.5) + (xOffset) + (BALL_RADIUS * 1.5), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
+                    grayPeg.setFillColor(Color.GRAY);
+                    canvas.add(grayPeg);
+                }
+                xOffset += BALL_RADIUS / 2;
+            }
+        }
+        
     }
 
     public static void main(String[] args) {
         
         // tests
         
-        // MastermindGame game = new MastermindGame(true, 4);
+        // MastermindGame game = new MastermindGame(4);
        
         // System.out.println(game);
     
