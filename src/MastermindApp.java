@@ -119,7 +119,7 @@ class MastermindApp {
                 // WHATEVER HAPPENS WHEN PLAYER WINS GAME //
                 if(currentGame.checkSecretCode(guessArray).equals(new ArrayList<String>(Arrays.asList("red","red","red","red")))) {
                     canvas.remove(resetButton);
-                    System.out.println("Game win!");
+                    // System.out.println("Game win!");
                     canvas.add(startNewGameButton);
 
                     // adds code to the top of the screen //
@@ -134,10 +134,10 @@ class MastermindApp {
                 }
                 guessNum += 1;
 
-                // WHATEVER HAPPENS WHEN GAME LOSES //
+                // WHATEVER HAPPENS WHEN PLAYER LOSES GAME //
                 if(guessNum == 10) {
                     canvas.remove(resetButton);
-                    System.out.println("Game loss!");
+                    // System.out.println("Game loss!");
                     canvas.add(startNewGameButton);
                     // adds code to the top of the screen //
                     double toTheRight = 0;
