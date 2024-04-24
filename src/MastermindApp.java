@@ -16,11 +16,11 @@ class MastermindApp {
 
     public static int guessNum = 0;
 
-    private static final int CANVAS_WIDTH = 500;
-    private static final int CANVAS_HEIGHT = 800;
+    private static int CANVAS_WIDTH = 500;
+    private static int CANVAS_HEIGHT = 800;
 
     public static final int BALL_RADIUS = 50;
-    private static final CanvasWindow canvas = new CanvasWindow("MACSTERMIND",CANVAS_WIDTH,CANVAS_HEIGHT);
+    private static CanvasWindow canvas = new CanvasWindow("MACSTERMIND",CANVAS_WIDTH,CANVAS_HEIGHT);
     private Button resetButton;
 
     public String currentClicked = null;
@@ -70,15 +70,7 @@ class MastermindApp {
             });
         }
 
-        // adds code to the top of the screen //
-        double toTheRight = 0;
-        for(String codeColor : currentGame.getSecretCode()) {
-            System.out.println(codeColor);
-            Ellipse codeBall = new Ellipse(100 - BALL_RADIUS + toTheRight, 700 - (13 * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
-            codeBall.setFillColor(new Color(MastermindGame.colorMap.get(codeColor)[0], MastermindGame.colorMap.get(codeColor)[1], MastermindGame.colorMap.get(codeColor)[2]));
-            canvas.add(codeBall);
-            toTheRight += BALL_RADIUS;
-        }
+        
 
 
         // TO DO: figure out how to make button be able to start new game in a new window //
@@ -89,7 +81,6 @@ class MastermindApp {
             canvas.closeWindow();
         });
 
-        // TODO: find what is causing error after you click the button like three times for some reason //
         resetButton = new Button("check");
         resetButton.setPosition(CANVAS_WIDTH * 0.775, CANVAS_HEIGHT * 0.75);
         resetButton.setScale(BALL_RADIUS, BALL_RADIUS);
@@ -116,6 +107,16 @@ class MastermindApp {
                     canvas.remove(resetButton);
                     System.out.println("Game win!");
                     canvas.add(startNewGameButton);
+
+                    // adds code to the top of the screen //
+                    double toTheRight = 0;
+                    for(String codeColor : currentGame.getSecretCode()) {
+                        System.out.println(codeColor);
+                        Ellipse codeBall = new Ellipse(100 - BALL_RADIUS + toTheRight, 700 - (13 * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
+                        codeBall.setFillColor(new Color(MastermindGame.colorMap.get(codeColor)[0], MastermindGame.colorMap.get(codeColor)[1], MastermindGame.colorMap.get(codeColor)[2]));
+                        canvas.add(codeBall);
+                        toTheRight += BALL_RADIUS;
+        }
                 }
                 guessNum += 1;
 
@@ -124,27 +125,35 @@ class MastermindApp {
                     canvas.remove(resetButton);
                     System.out.println("Game loss!");
                     canvas.add(startNewGameButton);
+                    // adds code to the top of the screen //
+                    double toTheRight = 0;
+                    for(String codeColor : currentGame.getSecretCode()) {
+                        System.out.println(codeColor);
+                        Ellipse codeBall = new Ellipse(100 - BALL_RADIUS + toTheRight, 700 - (13 * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
+                        codeBall.setFillColor(new Color(MastermindGame.colorMap.get(codeColor)[0], MastermindGame.colorMap.get(codeColor)[1], MastermindGame.colorMap.get(codeColor)[2]));
+                        canvas.add(codeBall);
+                        toTheRight += BALL_RADIUS;
+                    }
                 }
-
-
-                
-                int guessIndex = 0;
-                for(int n = 0; n < codeLength; n++) {
-                    guessIndex += 1;
-                    final int num = guessIndex - 1;
-                    Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + ((4 - guessNum) * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
-                    canvas.onClick(event -> {
-                        if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
-                            Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
-                            if(currentClicked != null) {
-                                guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
-                                canvas.add(guessEllipse);
-                                guessArray.set(num, currentClicked);
-                            }
-                        };
-                    });
-                    canvas.add(emptyRect);
-                    guessArray = MastermindGame.resetGuess(guessArray);
+                else {
+                    int guessIndex = 0;
+                    for(int n = 0; n < codeLength; n++) {
+                        guessIndex += 1;
+                        final int num = guessIndex - 1;
+                        Rectangle emptyRect = new Rectangle(guessIndex * BALL_RADIUS, (CANVAS_HEIGHT / 2) + ((4 - guessNum) * BALL_RADIUS), BALL_RADIUS, BALL_RADIUS);
+                        canvas.onClick(event -> {
+                            if(emptyRect.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                                Ellipse guessEllipse = new Ellipse(emptyRect.getX(),emptyRect.getY(), BALL_RADIUS, BALL_RADIUS);
+                                if(currentClicked != null) {
+                                    guessEllipse.setFillColor(new Color(MastermindGame.colorMap.get(currentClicked)[0], MastermindGame.colorMap.get(currentClicked)[1], MastermindGame.colorMap.get(currentClicked)[2]));
+                                    canvas.add(guessEllipse);
+                                    guessArray.set(num, currentClicked);
+                                }
+                            };
+                        });
+                        canvas.add(emptyRect);
+                        guessArray = MastermindGame.resetGuess(guessArray);
+                    }
                 }
             }
         });
@@ -226,7 +235,7 @@ class MastermindApp {
         // System.out.println("\n\n\n\n\n");
         // System.out.println(MastermindGame.printList(game.checkSecretCode(guessArray)));
     
-        MastermindApp newApp = new MastermindApp(4);
+        MastermindApp newApp = new MastermindApp(6);
         
     }
 
