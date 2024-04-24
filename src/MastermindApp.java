@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
+import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
@@ -34,6 +35,8 @@ class MastermindApp {
 
     public ArrayList<String> guessArray = new ArrayList<String>();
 
+    private WinScreen winScreen;
+
     public MastermindApp(int codeLength) {
         
         // fills the guessArray with nulls //
@@ -53,14 +56,13 @@ class MastermindApp {
         backgroundImg.setMaxHeight(CANVAS_HEIGHT);
         canvas.add(backgroundImg);
 
-
         // TODO: find what is causing error after you click the button like three times for some reason //
         resetButton = new Button("check");
         resetButton.setPosition(CANVAS_WIDTH * 0.775, CANVAS_HEIGHT * 0.75);
         resetButton.setScale(BALL_RADIUS, BALL_RADIUS);
         resetButton.onClick(() -> {
 
-
+        
             // this is a shotty algorithm tbh //
             // just supposed to remove the mouseball so it doesn't hang around //
             if(currentClicked != null) {
@@ -105,8 +107,7 @@ class MastermindApp {
                     canvas.add(emptyRect);
                 }
                 createGuessRects();
-
-
+                
             }
             
 
