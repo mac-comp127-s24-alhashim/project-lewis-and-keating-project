@@ -35,10 +35,12 @@ class MastermindApp {
     public ArrayList<String> guessArray = new ArrayList<String>();
 
     private WinScreen winScreen;
+    private LoseScreen loseScreen;
 
     public MastermindApp(int codeLength) {
 
         currentGame = new MastermindGame(false, codeLength);
+        
         
         // fills the guessArray with nulls //
         for(int i = 0; i < codeLength; i++) {
@@ -79,7 +81,6 @@ class MastermindApp {
 
         
 
-
         // TO DO: figure out how to make button be able to start new game in a new window //
         Button startNewGameButton = new Button("Start new game?");
         startNewGameButton.setPosition(100,100);
@@ -119,6 +120,7 @@ class MastermindApp {
                 // WHATEVER HAPPENS WHEN PLAYER WINS GAME //
                 if(currentGame.checkSecretCode(guessArray).equals(new ArrayList<String>(Arrays.asList("red","red","red","red")))) {
                     canvas.remove(resetButton);
+                    winScreen = new WinScreen(canvas);
                     // System.out.println("Game win!");
                     canvas.add(startNewGameButton);
 
@@ -137,6 +139,7 @@ class MastermindApp {
                 // WHATEVER HAPPENS WHEN PLAYER LOSES GAME //
                 if(guessNum == 10) {
                     canvas.remove(resetButton);
+                    loseScreen = new LoseScreen(canvas);
                     // System.out.println("Game loss!");
                     canvas.add(startNewGameButton);
                     // adds code to the top of the screen //
@@ -273,7 +276,7 @@ class MastermindApp {
         // System.out.println("\n\n\n\n\n");
         // System.out.println(MastermindGame.printList(game.checkSecretCode(guessArray)));
     
-        MastermindApp newApp = new MastermindApp(6);
+        MastermindApp newApp = new MastermindApp(4);
         
     }
 
