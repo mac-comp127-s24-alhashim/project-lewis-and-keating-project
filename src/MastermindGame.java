@@ -36,7 +36,7 @@ public class MastermindGame {
         }
 
 
-        // initializes colorMap -- might delete later, took like five seconds anyway//
+        // initializes colorMap
         colorMap.put("red", new int[]{195,40,40,230});
         colorMap.put("green", new int[]{70,180,90,230});
         colorMap.put("blue", new int[]{85,140,230,230});
@@ -54,7 +54,7 @@ public class MastermindGame {
 
     // this might not be that important but if we need to do something
     // with the secret code and we don't wanna risk changing the
-    // original code, this could be helpful
+    // original code
     private ArrayList<String> getDuplicateOfSecretCode() {
         ArrayList<String> copy = new ArrayList<String>();
         for(String color : this.secretCode) {
