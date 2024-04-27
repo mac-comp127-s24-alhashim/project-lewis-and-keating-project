@@ -5,9 +5,7 @@ import edu.macalester.graphics.Point;
 import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.Ellipse;
 import java.util.Random;
-import java.lang.Math;
 import java.awt.Color;
-import java.awt.List;
 import java.util.ArrayList;
 
 
@@ -29,6 +27,7 @@ public class LoseScreen extends GraphicsGroup {
         this.add(screenTint);
         ballGroup = new GraphicsGroup();
         winText = new GraphicsText("You Lose!");
+        winText.setFontSize(100);
         winText.setCenter(canvas.getCenter());
         this.add(winText);
 

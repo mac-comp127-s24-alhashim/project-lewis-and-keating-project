@@ -6,7 +6,6 @@ import edu.macalester.graphics.Rectangle;
 import edu.macalester.graphics.Ellipse;
 import java.lang.Math;
 import java.awt.Color;
-import java.awt.List;
 import java.util.ArrayList;
 
 
@@ -27,6 +26,7 @@ public class WinScreen extends GraphicsGroup {
         this.add(screenTint);
         ballGroup = new GraphicsGroup();
         winText = new GraphicsText("You Win!");
+        winText.setFontSize(100);
         winText.setCenter(canvas.getCenter());
         this.add(winText);
 

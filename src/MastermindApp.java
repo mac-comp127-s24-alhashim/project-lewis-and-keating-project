@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import edu.macalester.graphics.CanvasWindow;
 import edu.macalester.graphics.Ellipse;
-import edu.macalester.graphics.GraphicsGroup;
 import edu.macalester.graphics.GraphicsText;
 import edu.macalester.graphics.Image;
 import edu.macalester.graphics.Point;
@@ -50,6 +49,10 @@ class MastermindApp {
         // determines what canvas to use based on code length //
         if(codeLength == 4) {
             backgroundImg = new Image("Board.png");
+            canvas.closeWindow();
+            CANVAS_WIDTH = 500;
+            CANVAS_HEIGHT = 800;
+            canvas = new CanvasWindow("Macstermind", CANVAS_WIDTH, CANVAS_HEIGHT);
         }
         if (codeLength == 6){
             backgroundImg = new Image("BoardSixCode.png");
@@ -79,14 +82,61 @@ class MastermindApp {
             });
         }
 
+
+        // little numbers in the corner that you can click to switch code length //
+        GraphicsText numberSix = new GraphicsText("6");
+        numberSix.setPosition(CANVAS_WIDTH - 30, CANVAS_HEIGHT - 10);
+
+        GraphicsText numberFour = new GraphicsText("4");
+        numberFour.setPosition(CANVAS_WIDTH - 60, CANVAS_HEIGHT - 10);
+
+        if(codeLength == 4) {
+            numberSix.setFontSize(40);
+            numberSix.setFillColor(Color.GRAY);
+
+            numberFour.setFontSize(40);
+            numberFour.setFillColor(Color.RED);
+
+            canvas.add(numberFour);
+            canvas.add(numberSix);
+            canvas.onClick(event -> {
+                if(numberSix.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                    canvas.removeAll();
+                    guessNum = 0;
+                    MastermindApp newApp = new MastermindApp(6);
+                }
+            });
+        }
+        if(codeLength == 6) {
+            numberSix.setFontSize(40);
+            numberSix.setFillColor(Color.RED);
+
+            numberFour.setFontSize(40);
+            numberFour.setFillColor(Color.GRAY);
+
+            canvas.add(numberFour);
+            canvas.add(numberSix);
+            canvas.onClick(event -> {
+                if(numberFour.testHit(event.getPosition().getX(),event.getPosition().getY())){
+                    canvas.removeAll();
+                    guessNum = 0;
+                    MastermindApp newApp = new MastermindApp(4);
+                }
+            });
+        }
+
+
         
 
         // TO DO: figure out how to make button be able to start new game in a new window //
         Button startNewGameButton = new Button("Start new game?");
         startNewGameButton.setPosition(100,100);
         startNewGameButton.onClick(() -> {
+            canvas.removeAll();
+            guessNum = 0;
             MastermindApp newApp = new MastermindApp(codeLength);
-            canvas.closeWindow();
+
+            // canvas.closeWindow();
         });
 
         resetButton = new Button("check");
@@ -217,10 +267,11 @@ class MastermindApp {
     
 
     public void populatePegs(ArrayList<String> pegList) {
-        double xOffset = 0;
+        double xOffset;
         double yOffset = (4.25 - guessNum) * BALL_RADIUS;
 
         if(codeLength == 4) {
+            xOffset = -0.5 * (BALL_RADIUS);
             for(String peg : pegList) {
                 if(peg.equals("red")) {
                     Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
@@ -241,6 +292,7 @@ class MastermindApp {
             }
         }
         else {
+            xOffset = 0;
             for(String peg : pegList) {
                 if(peg.equals("red")) {
                     Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.5) + (xOffset) + (BALL_RADIUS * 1.5), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
