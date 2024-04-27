@@ -101,8 +101,7 @@ public class MastermindGame {
         }
 
 
-        // quick thingy to fill the rest with blanks 
-        // we might not need to use this when we build the UI
+        // fills rest of code with blanks //
         int howMuchIsLeft = guess.size() - returnArray.size();
         for(int i = 0; i < howMuchIsLeft; i++) {
             returnArray.add("blank");
@@ -122,6 +121,7 @@ public class MastermindGame {
     }
 
     // basically a toString for if we need to check a code other than the secret one
+    // helpful for testing
     public static String printList(ArrayList<String> list) {
         String returnString = "";
         for(int i = 0; i < list.size(); i++) {

@@ -135,8 +135,6 @@ class MastermindApp {
             canvas.removeAll();
             guessNum = 0;
             MastermindApp newApp = new MastermindApp(codeLength);
-
-            // canvas.closeWindow();
         });
 
         resetButton = new Button("check");
@@ -171,7 +169,6 @@ class MastermindApp {
                 if(currentGame.checkSecretCode(guessArray).equals(new ArrayList<String>(Arrays.asList("red","red","red","red")))) {
                     canvas.remove(resetButton);
                     winScreen = new WinScreen(canvas);
-                    // System.out.println("Game win!");
                     canvas.add(startNewGameButton);
 
                     // adds code to the top of the screen //
@@ -190,7 +187,6 @@ class MastermindApp {
                 if(guessNum == 10) {
                     canvas.remove(resetButton);
                     loseScreen = new LoseScreen(canvas);
-                    // System.out.println("Game loss!");
                     canvas.add(startNewGameButton);
                     // adds code to the top of the screen //
                     double toTheRight = 0;
@@ -317,12 +313,10 @@ class MastermindApp {
 
     public static void main(String[] args) {
         
-        // tests
+        // TESTING ENVIRONMENT
         
         // MastermindGame game = new MastermindGame(4);
-       
         // System.out.println(game);
-    
         // ArrayList<String> guessArray = new ArrayList<String>(Arrays.asList("blue","blue","blue","blue"));
         // System.out.println("Secretguess:  " + MastermindGame.printList(guessArray));
         // System.out.println("\n\n\n\n\n");
