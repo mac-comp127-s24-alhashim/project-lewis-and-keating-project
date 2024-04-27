@@ -128,7 +128,7 @@ class MastermindApp {
 
         
 
-        // TO DO: figure out how to make button be able to start new game in a new window //
+        // 'start new game' button
         Button startNewGameButton = new Button("Start new game?");
         startNewGameButton.setPosition(100,100);
         startNewGameButton.onClick(() -> {
@@ -263,11 +263,10 @@ class MastermindApp {
     
 
     public void populatePegs(ArrayList<String> pegList) {
-        double xOffset;
+        double xOffset = 0;
         double yOffset = (4.25 - guessNum) * BALL_RADIUS;
 
-        if(codeLength == 4) {
-            xOffset = -0.5 * (BALL_RADIUS);
+        if(pegList.size() == 4) {
             for(String peg : pegList) {
                 if(peg.equals("red")) {
                     Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.6) + (xOffset), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);
@@ -288,7 +287,6 @@ class MastermindApp {
             }
         }
         else {
-            xOffset = 0;
             for(String peg : pegList) {
                 if(peg.equals("red")) {
                     Ellipse redPeg = new Ellipse((CANVAS_WIDTH * 0.5) + (xOffset) + (BALL_RADIUS * 1.5), (CANVAS_HEIGHT / 2) + yOffset, (BALL_RADIUS / 2), BALL_RADIUS / 2);

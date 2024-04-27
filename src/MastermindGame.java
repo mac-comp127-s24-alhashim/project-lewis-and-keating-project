@@ -12,13 +12,7 @@ public class MastermindGame {
     public static final ArrayList<String> colorList = new ArrayList<String>(Arrays.asList("red","green","blue","yellow","brown","orange","black","white"));
     public static final HashMap<String, int[]> colorMap = new HashMap<>();
 
-    
-
-
     public Random random = new Random();
-
-    
-
 
     // constructor for MastermindGame, also randomly generates code of codeLength
     // only allows duplicates of colors within the code if duplicatesAllowed is true
