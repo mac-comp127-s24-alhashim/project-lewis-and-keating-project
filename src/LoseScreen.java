@@ -47,7 +47,6 @@ public class LoseScreen extends GraphicsGroup {
         canvas.animate(a -> {
             for (Ellipse ball : balls) {
                 if (ball.getY() < canvas.getHeight()) {
-                    // ball.moveBy(0, 1);
                     ball.setY(ball.getY() + 2);
                 }
                 else {
