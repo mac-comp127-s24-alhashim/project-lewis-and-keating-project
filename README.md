@@ -13,6 +13,9 @@ Gameplay with six ball codes:
 # Known bugs
 Clicks are sometimes not registered due to kilt graphics mouse events
 
+# In-Progress UML diagram:
+![MacsterMindUML]
+
 # The Project Proposal:
 ![DesignSketch](https://github.com/roarlewis/MastermindGame/blob/33353a0b0330b36580f3f4f71dca094a503a4930/MacstermindSketch.png)
 ## What is this project?
