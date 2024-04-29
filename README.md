@@ -1,5 +1,5 @@
 # Macstermind
-Authors: Lewis and Keating
+Authors: Lewis Libby Watt and Keating Shahmehri
 
 # How to play the game
 Welcome to Macstermind! This is a fully playable version of the classic board game Mastermind, created using Kilt Graphics. To begin play, simply run the program. Your ultimate goal is to guess a hidden code of colored balls by making guesses and getting feeback in the form of pegs which tell you how close you are to the correct code. Fill your guess by clicking the balls at the bottom of the screen, then clicking to place them in the current row. when you're ready, click the "Check Guess" button. On the right you'll see a series of pegs that can be gray, white, or red. Each red peg means that one ball in your guess is the right color in the right position, each white peg means that a ball in your guess is the right color in the wrong position, and each gray peg means that a ball in your guess is the wrong color completely. You have ten guesses to guess the right answer. Looking for a challenge? Click the 6 button in the bottom right corner to switch to a board where the code is 6 balls long. Good luck!
@@ -14,7 +14,7 @@ Gameplay with six ball codes:
 Clicks are sometimes not registered due to kilt graphics mouse events
 
 # In-Progress UML diagram:
-![MacsterMindUML]
+![MacsterMindUML](MacstermindUML.png)
 
 # The Project Proposal:
 ![DesignSketch](https://github.com/roarlewis/MastermindGame/blob/33353a0b0330b36580f3f4f71dca094a503a4930/MacstermindSketch.png)
